@@ -62,13 +62,15 @@ group :production do
 end
 
 group :test do
-
+  gem "faker", "~> 1.4.3"
   gem 'simplecov', :require => false
   gem 'cucumber-rails', :require => false
   gem 'cucumber-rails-training-wheels'
+  gem "factory_girl_rails", "~> 4.4.1"
 end
 
 group :development do
+  gem "factory_girl_rails", "~> 4.4.1"
   gem 'web-console', '~> 2.0'       
   gem 'listen',                '3.1.5'
   gem 'spring',                '2.0.2'
