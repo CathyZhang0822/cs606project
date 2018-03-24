@@ -1,14 +1,4 @@
 require 'faker'
-=begin
-FactoryGirl.define :user do |user|
-    user.username {Faker::Name.name}
-    user.email { Faker::Internet.email }
-    user.UIN {Faker::Number.number(9)}
-    user.phone {Faker::Number.number(10)}
-    user.password "123456"
-    user.password_confirmation "123456"
-end
-=end    
 
 FactoryGirl.define do
     factory :user do 

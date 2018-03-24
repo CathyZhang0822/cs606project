@@ -10,10 +10,12 @@ class Admin < ActiveRecord::Base
   validates :password_confirmation, presence: true, length: { minimum: 6 }
   
   has_secure_password
+=begin
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
+=end
 
 end

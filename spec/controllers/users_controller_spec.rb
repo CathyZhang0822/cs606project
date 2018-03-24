@@ -76,5 +76,69 @@ describe UsersController do
             end
         end
     end
-
+#Testing PUT methods
+    describe 'PUT update' do
+        before :each do
+            @user = FactoryGirl.create(:user, username: "Marry")
+        end
+        
+        context "valid attributes" do
+            it "located the requested @user" do
+                put :update, id: @user, 
+                    user: FactoryGirl.attributes_for(:user)
+                assigns(:user).should eq(@user)
+            end
+            
+            it "changes @user's attributes" do
+                put :update, id: @user,
+                    user: FactoryGirl.attributes_for(:user, username: "Larry")
+                @user.reload
+                @user.username.should eq("Larry")
+            end
+            
+            it "redirects to the updated user" do
+                put :update, id: @user,
+                    user: FactoryGirl.attributes_for(:user)
+                    response.should redirect_to @user
+            end
+        end
+        
+        context "invalid attributes" do
+            it "locates the requested @user" do
+                put :update, id: @user,
+                    user: FactoryGirl.attributes_for(:invalid_user)
+                assigns(:user).should eq(@user)
+            end
+            
+            it "does not change @user's attributes" do
+                put :update, id: @user,
+                    user: FactoryGirl.attributes_for(:user, username: "Larry")
+                @user.reload
+                @user.username.should eq("Larry")
+            end
+            
+            it "re-renders the edit method" do
+                put :update, id: @user,
+                    user: FactoryGirl.attributes_for(:invalid_user)
+                    response.should render_template :edit
+            end
+        end
+    end
+#Testing DELETE methods
+    describe 'DELETE destroy' do
+        before :each do
+            @user = FactoryGirl.create(:user)
+        end
+        
+        it "deletes the contact" do
+            expect{
+                delete :destroy, id: @user
+            }.to change(User,:count).by(-1)
+        end
+        
+        it "redirects to contacts#index" do
+            delete :destroy, id: @user
+            response.should redirect_to users_url
+        end
+    end
 end
