@@ -1,7 +1,9 @@
 class SuitsController < ApplicationController
     before_action :set_suit, only: [:edit, :update, :show, :destroy]
     def index
-        @suits = Suit.all
+        #@suits = Suit.all
+        @search = Suit.ransack(params[:q])
+        @suits = @search.result().paginate(page: params[:page],per_page:10)
     end
     def new 
         @suit = Suit.new
