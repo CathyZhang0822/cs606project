@@ -1,31 +1,23 @@
 <h1>All Users</h1>
-
-<table>
-    <tr>
-        <th>User Name</th>
-        <th>UIN</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Renting Suit</th>
-    </tr>
-    
-    <% @users.each do |user|%>
-    <tr>
-        <td><%= link_to user.username, user_path(user) %></td>
-        <td><%= user.UIN %></td>
-        <td><%= user.phone %></td>
-        <td><%= user.email %></td>
-        <td><%= user.suit.appid if user.suit %></td>
-        <td><%= link_to "Edit",edit_user_path(user) %></td>
-        <td><%= link_to "Show", user_path(user) %></td>
-        <td><%= link_to "Delete", user_path(user), method: :delete %></td>
-    </tr>
-    <% end %>
-</table>
-
-<p>
-    <%= link_to "Back to the homepage", root_path %>
-</p>
 <p>
     <%= link_to "Back to the Closet", suits_path %>
 </p>
+
+<%= search_form_for @search_user do |f| %>
+    <%= f.label :username_cont %>
+    <%= f.search_field :username_cont %><br>
+    <%= f.label :UIN %>
+    <%= f.search_field :UIN_cont %><br>
+    <%= f.label :email %>
+    <%= f.search_field :email_cont %><br>
+    <%= f.label :phone %>
+    <%= f.search_field :phone_cont %><br>
+   <%= f.submit "Search" %>
+<% end %>
+<div align="center"><%= will_paginate %></div>
+
+<%= content_tag :table, class: 'table' do %>
+   <%= content_tag :thead, display_user_sorted_column_headers(@search_user), nil, false %>
+   <%= content_tag :tbody, display_user_sorted_search_results(@users), nil, false %>
+<% end %>
+<div align="center"><%= will_paginate %></div>
