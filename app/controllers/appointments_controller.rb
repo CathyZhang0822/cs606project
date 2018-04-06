@@ -1,11 +1,16 @@
 class AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
-  before_action :require_user, except: [:index, :show]
+  before_action :require_user, except: [:show]
   before_action :require_same_user, only: [:edit, :update, :destroy]
   # GET /appointments
   # GET /appointments.json
   def index
-    @appointments = Appointment.all
+    if current_user.admin?
+      @appointments = Appointment.all
+    elsif
+      @appointments = current_user.appointments.all
+    end
+    #@appointments = Appointment.all
   end
 
   # GET /appointments/1
@@ -26,6 +31,7 @@ class AppointmentsController < ApplicationController
   # POST /appointments.json
   def create
     @appointment = Appointment.new(appointment_params)
+    @appointment.user = @current_user
 
     respond_to do |format|
       if @appointment.save
