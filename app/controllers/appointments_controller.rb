@@ -6,9 +6,12 @@ class AppointmentsController < ApplicationController
   # GET /appointments.json
   def index
     if current_user.admin?
-      @appointments = Appointment.all
+      @search_appointment = Appointment.ransack(params[:q])
+      @appointments = @search_appointment.result().paginate(page: params[:page], per_page:10)
     elsif
-      @appointments = current_user.appointments.all
+      @search_appointment = current_user.appointments.ransack(params[:q])
+      @appointments = @search_appointment.result().paginate(page: params[:page], per_page:10)
+      #@appointments = current_user.appointments.all.paginate(page: params[:page], per_page:10)
     end
     #@appointments = Appointment.all
   end
