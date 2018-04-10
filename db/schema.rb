@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410180842) do
+ActiveRecord::Schema.define(version: 20180410205951) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name"
@@ -30,9 +30,9 @@ ActiveRecord::Schema.define(version: 20180410180842) do
 
   create_table "rentals", force: :cascade do |t|
     t.datetime "pickUpTime"
-    t.datetime "expectedReturnTime",                       null: false
+    t.datetime "expectedReturnTime",                    null: false
     t.datetime "returnTime"
-    t.string   "status",             default: "Available"
+    t.string   "status",             default: "Active"
     t.integer  "user_id"
     t.integer  "suit_id"
     t.datetime "created_at"

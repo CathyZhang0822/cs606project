@@ -1,11 +1,17 @@
 class RentalsController < ApplicationController
     include RentalsHelper
+    
     require 'date'
+    Time.zone = 'Central Time (US & Canada)'
+    
     def index
         @rentals = Rental.all
     end
     
     def show
+        @rental = Rental.find(params[:id])
+        #Henry: @user = User.find(@rental.user_id)
+        @user = @rental.user
     end
     
     def new
@@ -13,13 +19,39 @@ class RentalsController < ApplicationController
     end
     
     def create
-        @rental = Rental.new(params[:rental])
-        if @rental.save
-            flash[:success] = "#{@rental.suit.appid} has been rented!"
-            redirect_to rentals_path
+        user_id = rental_params[:user_id]
+        suit_id = rental_params[:suit_id]
+        if user_id == ""
+            flash[:danger] = "Please select a customer"
+            redirect_to new_rental_path(:suit_id => suit_id)
+            return
+        end
+        if Suit.find(suit_id).suitStatus != "Available"
+            flash[:danger] = "This suit is not available."
+            redirect_to new_rental_path
+        end
+        user = User.find(user_id)
+        if user.available
+            @rental = Rental.new(rental_params)
+            if @rental.save
+                flash[:success] = "#{@rental.suit.appid} was succussfully rented!"
+                redirect_to @rental
+                #Update user&suit status
+                #suit = Suit.find(suit_id)
+                suit = Suit.find(@rental.suit_id)
+                suit.update_attribute(:suitStatus, "Checkedout")
+                user.update_attribute(:available, false)
+            else
+                if @rental.errors.any?
+                    @rental.errors.full_messages.each do |msg|
+                        flash[:notice] = msg
+                    end
+                end
+                redirect_to new_rental_path(:suit_id => suit_id)
+            end
         else
-            flash[:danger] = "Some problem prevented the movie from being rented."
-            render 'rentals/new'
+            flash[:danger] = "This user is currently borrowing a suit!"
+            redirect_to user
         end
     end
     
@@ -31,13 +63,19 @@ class RentalsController < ApplicationController
         @rental = Rental.find(params[:id])
         if @rental.update(rental_params)
             flash[:success] = 'The rental was succussfully updated'
-            redirect_to rental_path(@rentals)
+            redirect_to rental_path(@rental)
         else
             render :edit
         end
     end
     
     def destroy
+        @rental = Rental.find(params[:id])
+        User.find(@rental.user_id).update_attribute(:available, true)
+        Suit.find(@rental.suit_id).update_attribute(:suitStatus, "Available")
+        @rental.destroy
+        flash[:success] = 'Rent was deleted!'
+        redirect_to rentals_path
         
     end
     

@@ -1,0 +1,39 @@
+<h1>Renters#new</h1>
+<p>Find me in app/views/renters/new.html.erb</p>
+
+
+<% if @rental.errors.any? %>
+<h2>"The following errors prevented the article from getting created"</h2>
+<ul>
+    <% @rental.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+</ul>
+<% end %>
+
+<% if @rental.suit_id.blank? %>
+  <% suit_id = params[:suit_id] %>
+<% else %>
+  <% suit_id = @rental.suit_id %>
+<% end %>
+
+<%= form_for @rental do |f| %>
+    <%= f.label :suit_id, "App. ID" %><br/>
+    <%= f.collection_select :suit_id, Suit.all, :id, lambda { |s| "#{s.appid}"}, {:prompt => "Please select a suit"} %><br/>
+    <%= f.label :user_id, "UIN of costumer:" %><br/>
+    <%= f.collection_select :user_id, User.all, :id, lambda { |u| "#{u.UIN}"}, {:prompt => "Please select Customer UIN"} %><br/>
+    <%= f.label :pickUpTime, "Pick up time:" %><br/>
+    <%= f.date_select :pickUpTime, id: :rental_pickUpTime %><br/>
+    <%= f.label :expectReturnTime, "Expected return time:" %><br/>
+    <%= f.date_select :expectedReturnTime, id: :rental_expectedReturnTime %><br/>
+    <%= f.label :status %><br/>
+    <%= f.collection_select :status, Rental.statuses, :first, :first, class: 'form-control'%>
+    
+
+<%= f.submit "Make a rent" %><br>
+
+<% end %>
+
+<p>
+    <%= link_to "Back to see all rents", rentals_path %>
+</p>
