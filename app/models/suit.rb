@@ -1,5 +1,4 @@
 class Suit < ActiveRecord::Base
-    belongs_to :user
     has_many :rentals
     enum genders:[:M, :F]
     enum suitStatuses: [:Available, :Checkedout]

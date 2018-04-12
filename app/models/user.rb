@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-    has_one :suit
     has_many :appointments
     has_many :rentals
     validates :username, presence: true

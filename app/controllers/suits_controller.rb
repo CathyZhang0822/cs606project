@@ -14,9 +14,6 @@ class SuitsController < ApplicationController
     
     def create
         @suit = Suit.new(suit_params)
-        if @suit.user_id == 0
-            @suit.user =nil
-        end
         if @suit.save
             #do something
             flash[:notice] = "Suit was succussfully added to the Closet!"

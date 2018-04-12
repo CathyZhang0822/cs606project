@@ -3,9 +3,17 @@ class RentalsController < ApplicationController
     
     require 'date'
     Time.zone = 'Central Time (US & Canada)'
+    before_action :require_user, expect: [:show]
     
     def index
-        @rentals = Rental.all
+        #@rentals = Rental.all
+        if current_user.admin?
+            @search_rental = Rental.ransack(params[:q])
+            @rentals = @search_rental.result().paginate(page: params[:page], per_page:10)
+        else
+            @search_rental = current_user.rentals.ransack(params[:q])
+            @rentals = @search_rental.result().paginate(page: params[:page], per_page:10)
+        end
     end
     
     def show
@@ -29,13 +37,14 @@ class RentalsController < ApplicationController
         if Suit.find(suit_id).suitStatus != "Available"
             flash[:danger] = "This suit is not available."
             redirect_to new_rental_path
+            return
         end
         user = User.find(user_id)
         if user.available
             @rental = Rental.new(rental_params)
             if @rental.save
                 flash[:success] = "#{@rental.suit.appid} was succussfully rented!"
-                redirect_to @rental
+                redirect_to rentals_path
                 #Update user&suit status
                 #suit = Suit.find(suit_id)
                 suit = Suit.find(@rental.suit_id)

@@ -1,23 +1,7 @@
 <h1>Welcome, <%= @user.username %></h1>
 
-<h4><%= @user.username %>'s renting suits</h4>
+<h4><%= @user.username %>'s rentals</h4>
 <%#= render 'suits/suit', obj: @user.suit %>
-<table>
-    <tr>
-        <th>Suit ID</th>
-        <th>Gender</th>
-        <th>Size</th>
-        <th>Description</th>
-        <th>Renter</th>
-    </tr>
-    <tr>
-        <td><%= @user.suit.appid if @user.suit %></td>
-        <td><%= @user.suit.gender if @user.suit %></td>
-        <td><%= @user.suit.size if @user.suit %></td>
-        <td><%= @user.suit.description if@user.suit %></td>
-        <td><%= @user.username if@user.suit %></td>
-    </tr>
-</table>
 
 <p>
     <%= link_to "Back to see all users", users_path %>
