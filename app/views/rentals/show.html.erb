@@ -1,0 +1,20 @@
+<p>
+    <strong>Suit ID:</strong>
+    <%= Suit.find(@rental.suit_id).appid %>
+</p>
+<p>
+    <strong>Pick Up Time:</strong>
+    <%= @rental.pickUpTime %>
+</p>
+<p>
+    <strong>Expect Return Time:</strong>
+    <%= @rental.expectedReturnTime%>
+</p>
+<p>
+    <strong>Return Time:</strong>
+    <% if @rental.status == "Active" %>
+    <%= button_to "return?", returnsuit_rental_path(@rental), :method => :put %>
+    <% else %>
+    <%= @rental.returnTime %>
+    <% end %>
+</p>

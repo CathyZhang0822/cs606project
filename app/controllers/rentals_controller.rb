@@ -88,6 +88,19 @@ class RentalsController < ApplicationController
         
     end
     
+    def returnsuit
+        @rental = Rental.find(params[:id])
+        @rental.update_attribute(:returnTime, Time.now)
+        flash[:success] = 'Suit was successfully returned. Thank you!'
+        @rental.update_attribute(:status, "Completed")
+        user = User.find(@rental.user_id)
+        suit = Suit.find(@rental.suit_id)
+        suit.update_attribute(:suitStatus, "Available")
+        user.update_attribute(:available, true)
+        redirect_to @rental
+        
+    end
+    
     private
 
     def rental_params
