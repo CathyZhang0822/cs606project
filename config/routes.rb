@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   
   
   get 'signup', to:'users#new'
-  resources :users, except: [:new]
+  resources :users do
+    member do
+      get :confirm_email
+    end
+  end
   
   get    '/adminsignup',  to: 'admins#new'
   get    '/adminlogin', to: 'adminsession#new'

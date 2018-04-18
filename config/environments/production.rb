@@ -1,4 +1,16 @@
 Rails.application.configure do
+  config.action_mailer.default_url_options = { host: "localhost:8080" }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.gmail.com',
+    #port: 587
+    port: 587,
+    domain: 'gmail.com',
+    user_name: 'zhangyuelinchina@gmail.com',
+    password: '1996Leo822...',
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.

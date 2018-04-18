@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410205951) do
+ActiveRecord::Schema.define(version: 20180415033331) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 20180410205951) do
     t.datetime "updated_at"
     t.boolean  "admin",           default: false
     t.boolean  "available",       default: true
+    t.boolean  "email_confirmed", default: false
+    t.string   "confirm_token"
   end
 
 end

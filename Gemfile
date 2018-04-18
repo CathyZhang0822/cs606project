@@ -40,9 +40,10 @@ gem 'resque'
 gem 'resque-scheduler'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
+gem 'figaro'
 # Use Unicorn as the app server
 # gem 'unicorn'
+gem 'mailgun-ruby', '~>1.0.2', require: 'mailgun'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

@@ -10,13 +10,29 @@ class UsersController < ApplicationController
     def create
         @user = User.new(user_params)
         if @user.save
-            session[:user_id] = @user.id
-            flash[:notice] = "Welcome to Career Closet #{@user.username}"
-            redirect_to user_path(@user)
+            UserMailer.registration_confirmation(@user).deliver_now
+            flash[:success] = "Please confirm your email address to continue"
+            redirect_to root_url
+            #session[:user_id] = @user.id
+            #flash[:notice] = "Welcome to Career Closet #{@user.username}"
+            #redirect_to user_path(@user)
         else
+            flash[:error] = "Oooops, something went wrong!"
             render 'new'
         end
     end
+    def confirm_email
+        user = User.find_by_confirm_token(params[:id])
+        if user
+            user.email_activate
+            flash[:success] = "Welcome to Career Closet! Your email has been confirmed."
+            redirect_to login_url
+        else
+            flash[:error] = "Sorry. User does not exit"
+            redirect_to root_url
+        end
+    end
+    
     def edit
         @user = User.find(params[:id])
     end
