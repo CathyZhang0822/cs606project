@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180415033331) do
+ActiveRecord::Schema.define(version: 20180418225308) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name"
@@ -57,10 +57,13 @@ ActiveRecord::Schema.define(version: 20180415033331) do
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",           default: false
-    t.boolean  "available",       default: true
-    t.boolean  "email_confirmed", default: false
+    t.boolean  "admin",                  default: false
+    t.boolean  "available",              default: true
+    t.boolean  "email_confirmed",        default: false
     t.string   "confirm_token"
+    t.string   "auth_token"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
 
 end

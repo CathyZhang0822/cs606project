@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :password_resets
+
   resources :rentals do
     member do
       put 'returnsuit'

@@ -7,8 +7,13 @@ class SessionController < ApplicationController
    
     if user && user.authenticate(params[:session][:password])
       if user.email_confirmed
-        
-        session[:user_id] = user.id
+        #We want to user unique generate_token and cookie instead of session
+        #session[:user_id] = user.id
+        if params[:remember_me]
+          cookies.permanent[:auth_token] = user.auth_token
+        else
+          cookies[:auth_token] = user.auth_token
+        end
         redirect_to user_path(user)
       else
         flash[:error] = "Please activate your account by confirm your email address"
@@ -21,7 +26,8 @@ class SessionController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
+    #session[:user_id] = nil
+    cookies.delete(:auth_token)
     flash[:success] = "You have logged out"
     redirect_to root_path
   end
